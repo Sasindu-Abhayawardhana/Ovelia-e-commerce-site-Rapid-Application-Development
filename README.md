@@ -2,6 +2,8 @@
 
 A full-stack e-commerce web application for a modern lifestyle/general goods store. Built with React 18 + TypeScript + Vite on the frontend and Firebase as the complete backend.
 
+**🚀 Live Demo: [https://ovelia-50da3.web.app/](https://ovelia-50da3.web.app/)**
+
 ---
 
 ## Tech Stack
@@ -241,7 +243,7 @@ npm run build
 firebase deploy
 ```
 
-Your app will be live at `https://YOUR_PROJECT_ID.web.app`
+Your app will be live at `https://ovelia-50da3.web.app/`
 
 ---
 
