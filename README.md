@@ -20,19 +20,49 @@ A full-stack e-commerce web application for a modern lifestyle/general goods sto
 
 ---
 
-## Architecture
+## System Design & Architecture
 
-The application follows a modern serverless architecture pattern, leveraging Firebase as a Backend-as-a-Service (BaaS).
+### 1. System Architecture
+![System Architecture](docs/system-architecture.png)
+This architecture shows the client SPA talking directly to Firebase's Auth, Firestore, and Storage. Security rules act as a gatekeeper to access. Payments are routed through Cloud Functions to Stripe rather than handled client-side, which is the correct, non-negotiable pattern for real payment processing.
 
 - **Client Layer**: A Single Page Application (SPA) built with React and Vite. It handles routing (React Router), state management (Zustand), and UI rendering (Tailwind CSS, Framer Motion).
 - **Authentication**: Firebase Authentication manages user identities, supporting Email/Password and Google sign-in. Custom claims are used for role-based access control (e.g., Admin roles).
-- **Data Layer**: Cloud Firestore serves as the primary NoSQL database, structured into collections like `users`, `products`, `orders`, and `reviews`. Access is secured via Firestore Security Rules.
+- **Data Layer**: Cloud Firestore serves as the primary NoSQL database. Access is secured via Firestore Security Rules.
 - **Storage Layer**: Firebase Cloud Storage stores product assets and user-uploaded media.
-- **Serverless Functions**: Firebase Cloud Functions handle secure backend processes that cannot be trusted to the client, such as:
-  - Generating Stripe Checkout sessions.
-  - Listening to Stripe webhooks for payment confirmations.
-  - Managing admin privileges.
+- **Serverless Functions**: Firebase Cloud Functions handle secure backend processes that cannot be trusted to the client, such as Stripe Checkout sessions, webhooks, and managing admin privileges.
 - **External Services**: Stripe is integrated for secure payment processing.
+
+### 2. Firestore Data Model
+![Firestore Data Model](docs/firestore-data-model.png)
+The data model directly reflects the actual `firestore.rules`. 
+- `carts` and `wishlists` are keyed by `userId` directly (one document per user, not a subcollection).
+- `reviews` live as a subcollection under `products`.
+- `promoCodes` and `categories` are standalone collections separately writable only by admins.
+
+### 3. Role-Based Access Control
+![Role-Based Access Control](docs/role-based-access.png)
+Role-based access control defines what read/write operations users can perform based on their authentication status and custom claims, enforced server-side by `firestore.rules`.
+
+### 4. UI/UX Design System Rationale
+![UI/UX Design System](docs/ui-ux-design-system.png)
+A quick visual reference for the design tokens actually used (matching the Tailwind config). *Note: The specific colors/fonts should be cross-checked against the actual deployed site screenshots for exact consistency.*
+
+### Customer Journey Flowchart
+```mermaid
+graph LR
+    A[Browse Products] --> B[Add to Cart]
+    B --> C[Checkout & Payment]
+    C --> D[Order Confirmation]
+    D --> E[Order Tracking]
+```
+
+### The Importance of AI to Rapid Application Development
+Artificial Intelligence drastically accelerates the Rapid Application Development (RAD) lifecycle by acting as an intelligent co-pilot during coding, architecture planning, and debugging. In this project, AI assisted in:
+- **Code Generation & Boilerplating:** Instantly generating boilerplate code for React components, Tailwind styling, and Firebase configurations, significantly reducing initial setup time.
+- **Architectural Guidance:** Recommending best practices for serverless infrastructure (like using Cloud Functions for Stripe to ensure security) and shaping a robust Firestore data model.
+- **Debugging & Security:** Identifying potential vulnerabilities in security rules and resolving deployment errors swiftly, ensuring a production-ready application.
+- **Continuous Iteration:** Allowing for rapid prototyping and seamless transitions from ideas to functional, dynamic user interfaces.
 
 ---
 
