@@ -4,6 +4,11 @@ A full-stack e-commerce web application for a modern lifestyle/general goods sto
 
 **🚀 Live Demo: [https://ovelia-50da3.web.app/](https://ovelia-50da3.web.app/)**
 
+
+
+https://github.com/user-attachments/assets/ebd818ca-d30d-4885-9d8f-470f3042b61a
+
+
 ---
 
 ## Tech Stack
